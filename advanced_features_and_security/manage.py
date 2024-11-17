@@ -2,6 +2,28 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
+from bookshelf.models import YourModel  # Replace with your app and model names
+
+# Get the content type for the model
+content_type = ContentType.objects.get_for_model(YourModel)
+
+# Create groups
+editors_group, _ = Group.objects.get_or_create(name='Editors')
+viewers_group, _ = Group.objects.get_or_create(name='Viewers')
+admins_group, _ = Group.objects.get_or_create(name='Admins')
+
+# Define permissions
+view_permission = Permission.objects.get(content_type=content_type, codename='view_yourmodel')
+create_permission = Permission.objects.get(content_type=content_type, codename='add_yourmodel')
+edit_permission = Permission.objects.get(content_type=content_type, codename='change_yourmodel')
+delete_permission = Permission.objects.get(content_type=content_type, codename='delete_yourmodel')
+
+# Assign permissions to groups
+editors_group.permissions.add(view_permission, create_permission, edit_permission)
+viewers_group.permissions.add(view_permission)
+admins_group.permissions.add(view_permission, create_permission, edit_permission, delete_permission)
 
 
 def main():

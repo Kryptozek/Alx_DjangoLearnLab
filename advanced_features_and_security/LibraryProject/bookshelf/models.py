@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
@@ -40,4 +41,18 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+
+class YourModel(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can view the instance"),
+            ("can_create", "Can create instances"),
+            ("can_edit", "Can edit instances"),
+            ("can_delete", "Can delete instances"),
+        ]
 
