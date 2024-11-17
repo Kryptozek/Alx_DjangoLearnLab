@@ -7,6 +7,7 @@ from django.contrib.auth.views import LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.contrib.auth import login
 
 
 # Function-based view to list all books
