@@ -2,10 +2,12 @@ from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from .models import Book# Import models from the current app
 from .models import Library
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
 from django.shortcuts import render
+
 
 # Function-based view to list all books
 def list_books(request):
