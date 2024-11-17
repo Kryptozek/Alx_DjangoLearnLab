@@ -3,6 +3,9 @@ from django.contrib.auth.decorators import permission_required
 from django.shortcuts import  redirect
 from .models import Book
 from .forms import BookSearchForm
+from .forms import ExampleForm
+from .forms import ExampleForm
+
 
 @permission_required('app_name.can_view', raise_exception=True)
 def view_instance(request, instance_id):
@@ -43,6 +46,27 @@ def book_search(request):
     else:
         form = BookSearchForm()
     return render(request, 'bookshelf/book_list.html', {'form': form})
+
+
+
+def example_form_view(request):
+    """
+    Handles rendering and processing of ExampleForm.
+    """
+    if request.method == "POST":
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process the form data
+            title = form.cleaned_data['title']
+            description = form.cleaned_data.get('description', "")
+            publish_date = form.cleaned_data.get('publish_date', None)
+            # Add additional processing logic here
+            return render(request, 'bookshelf/form_success.html', {'title': title})
+    else:
+        form = ExampleForm()
+
+    return render(request, 'bookshelf/form_example.html', {'form': form})
+
 
 
 
