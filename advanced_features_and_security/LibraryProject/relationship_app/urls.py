@@ -1,5 +1,5 @@
 from django.urls import path
-from bookshelf import views
+from relationship_app import views
 from .views import list_books
 from django.urls import path
 from . import views

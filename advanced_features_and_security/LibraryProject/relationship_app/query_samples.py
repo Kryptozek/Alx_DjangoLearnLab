@@ -1,4 +1,4 @@
-from bookshelf.models import Author, Book, Library, Librarian
+from relationship_app.models import Author, Book, Library, Librarian
 
 # Query all books by a specific author
 def books_by_author(author_name):
