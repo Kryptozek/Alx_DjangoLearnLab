@@ -29,7 +29,7 @@ DEBUG = False
 ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
-# Browser security settings
+
 # Prevent XSS attacks by enabling the browser's XSS filter
 SECURE_BROWSER_XSS_FILTER = True
 
@@ -49,6 +49,10 @@ SECURE_SSL_REDIRECT = True  # Redirect all HTTP traffic to HTTPS
 SECURE_HSTS_SECONDS = 31536000  # Enforce HTTPS for 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
 SECURE_HSTS_PRELOAD = True  # Allow preloading of the site into browsers
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']
 
 
 
