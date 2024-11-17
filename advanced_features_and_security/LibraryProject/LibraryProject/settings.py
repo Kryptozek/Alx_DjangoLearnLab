@@ -23,11 +23,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-lrd*vxwk^z$ye4^sps*ccv!j8b-9_)-$w@!vh4^^e)^e!2f9-u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+# Browser security settings
+# Prevent XSS attacks by enabling the browser's XSS filter
+SECURE_BROWSER_XSS_FILTER = True
+
+# Block rendering the app in iframes to prevent clickjacking
+X_FRAME_OPTIONS = "DENY"
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Secure cookies
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 
 # Application definition
@@ -50,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "csp.middleware.CSPMiddleware",
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -124,3 +137,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Example CSP policy: Adjust according to your app's requirements
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "https://trusted-scripts.example.com")
+CSP_STYLE_SRC = ("'self'", "https://trusted-styles.example.com")

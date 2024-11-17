@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import  redirect
 from .models import Book
+from .forms import BookSearchForm
 
 @permission_required('app_name.can_view', raise_exception=True)
 def view_instance(request, instance_id):
@@ -30,5 +31,18 @@ def book_list(request):
     """
     books = Book.objects.all()  # Fetch all books from the database
     return render(request, 'bookshelf/book_list.html', {'books': books})
+
+
+def book_search(request):
+    if request.method == "GET":
+        form = BookSearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['search_query']
+            books = Book.objects.filter(title__icontains=query)
+            return render(request, 'bookshelf/book_list.html', {'books': books, 'form': form})
+    else:
+        form = BookSearchForm()
+    return render(request, 'bookshelf/book_list.html', {'form': form})
+
 
 
