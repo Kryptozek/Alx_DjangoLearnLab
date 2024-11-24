@@ -16,7 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .views import BookList
+from django.contrib import admin
+from django.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('books/', BookList.as_view(), name='book-list'),
+    path('api/', include('api.urls')),  # Include the api app's URLs
 ]
+
