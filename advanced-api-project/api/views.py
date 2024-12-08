@@ -1,37 +1,34 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
+from rest_framework import permissions
 from .models import Book
 from .serializers import BookSerializer
 
-
-# List and Create Views (equivalent to ListView and CreateView)
+# List View for Books
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]  # Read access to everyone
+    permission_classes = [permissions.AllowAny]  # Public read-only access
 
+# Create View for Books
 class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Write access to authenticated users
+    permission_classes = [permissions.IsAuthenticated]  # Only authenticated users can create
 
-# Retrieve, Update, and Delete Views (equivalent to DetailView, UpdateView, and DeleteView)
+# Detail View for a Single Book
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]  # Public read-only access
 
+# Update View for a Book
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Write access to authenticated users
+    permission_classes = [permissions.IsAuthenticated]  # Only authenticated users can update
 
+# Delete View for a Book
 class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Delete access to authenticated users
-
-class IsAuthenticatedOrReadOnly(permissions.BasePermission):
-    def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return request.user and request.user.is_authenticated
+    permission_classes = [permissions.IsAuthenticated]  # Only authenticated users can delete
