@@ -2,6 +2,7 @@ from django import forms
 from .models import Post
 from .models import Comment
 from .models import Tag
+from taggit.forms import TagField
 
 class PostForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(
@@ -9,6 +10,7 @@ class PostForm(forms.ModelForm):
             widget=forms.CheckboxSelectMultiple,
             required=False
         )
+    tags = TagField(required=False)
     class Meta:
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the title'}),
