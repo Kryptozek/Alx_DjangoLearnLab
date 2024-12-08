@@ -1,11 +1,15 @@
 from django import forms
 from .models import Post
 from .models import Comment
+from .models import Tag
 
 class PostForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+            queryset=Tag.objects.all(),
+            widget=forms.CheckboxSelectMultiple,
+            required=False
+        )
     class Meta:
-        model = Post
-        fields = ['title', 'content']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the title'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
@@ -14,6 +18,9 @@ class PostForm(forms.ModelForm):
             'title': 'Post Title',
             'content': 'Content',
         }
+        
+        model = Post
+        fields = ['title', 'content', 'tags']
 
 
 class CommentForm(forms.ModelForm):

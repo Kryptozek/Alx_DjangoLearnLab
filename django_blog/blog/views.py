@@ -17,8 +17,12 @@ from django.views.generic import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from .models import Comment, Post
+from .models import Comment
 from .forms import CommentForm
+from django.db.models import Q
+from .models import Tag
+
+
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -104,13 +108,6 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         post = self.get_object()
         return self.request.user == post.author
     
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
-from .models import Comment, Post
-from .forms import CommentForm
 
 class PostDetailView(DetailView):
     model = Post
@@ -177,3 +174,18 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         return self.object.post.get_absolute_url()
+
+def search(request):
+    query = request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
+        ).distinct()
+    else:
+        posts = Post.objects.none()
+    return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
+
+def tag_posts(request, tag_name):
+    tag = Tag.objects.get(name=tag_name)
+    posts = Post.objects.filter(tags=tag)
+    return render(request, 'blog/tag_posts.html', {'posts': posts, 'tag': tag})
