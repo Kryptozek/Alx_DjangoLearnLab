@@ -189,3 +189,13 @@ def tag_posts(request, tag_name):
     tag = Tag.objects.get(name=tag_name)
     posts = Post.objects.filter(tags=tag)
     return render(request, 'blog/tag_posts.html', {'posts': posts, 'tag': tag})
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'  # Use the post list template
+    context_object_name = 'posts'  # The context variable passed to the template
+
+    def get_queryset(self):
+        tag_slug = self.kwargs['tag_slug']  # Get the tag slug from the URL
+        tag = Tag.objects.get(slug=tag_slug)  # Get the tag object based on the slug
+        return Post.objects.filter(tags=tag)  # Filter posts by the tag
